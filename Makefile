@@ -20,7 +20,8 @@ else
 		CXXFLAGS +=  -DMACOSX -mmacosx-version-min=10.11
 		LDFLAGS +=  -mmacosx-version-min=10.11
 	else
-		INSTALL_DIR=/usr/local
+		#INSTALL_DIR=/usr/local
+		INSTALL_DIR=libphosg
 		CXXFLAGS +=  -DLINUX
 		LDFLAGS +=  -pthread
 	endif
@@ -30,6 +31,8 @@ all: libphosg.a jsonformat$(EXE_EXTENSION) test
 
 install: libphosg.a
 	mkdir -p $(INSTALL_DIR)/include/phosg
+	mkdir -p $(INSTALL_DIR)/lib
+	mkdir -p $(INSTALL_DIR)/bin
 	cp libphosg.a $(INSTALL_DIR)/lib/
 	cp -r *.hh $(INSTALL_DIR)/include/phosg/
 	cp jsonformat $(INSTALL_DIR)/bin/
