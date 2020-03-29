@@ -27,9 +27,10 @@ else
 	endif
 endif
 
-all: libphosg.a jsonformat$(EXE_EXTENSION) test
+all: build test
 
-install: libphosg.a
+.PHONY: install
+install: libphosg.a jsonformat$(EXE_EXTENSION)
 	mkdir -p $(INSTALL_DIR)/include/phosg
 	mkdir -p $(INSTALL_DIR)/lib
 	mkdir -p $(INSTALL_DIR)/bin
@@ -44,6 +45,7 @@ libphosg.a: $(OBJECTS)
 jsonformat$(EXE_EXTENSION): JSON.o JSONPickle.o Strings.o Filesystem.o Process.o Time.o JSONFormat.o
 	$(CXX) $(LDFLAGS) $^ -o $@
 
+.PHONY: test
 test: ConsistentHashRingTest$(EXE_EXTENSION) EncodingTest$(EXE_EXTENSION) FileCacheTest$(EXE_EXTENSION) FilesystemTest$(EXE_EXTENSION) HashTest$(EXE_EXTENSION) ImageTest$(EXE_EXTENSION) JSONPickleTest$(EXE_EXTENSION) JSONTest$(EXE_EXTENSION) KDTreeTest$(EXE_EXTENSION) LRUSetTest$(EXE_EXTENSION) ProcessTest$(EXE_EXTENSION) StringsTest$(EXE_EXTENSION) TimeTest$(EXE_EXTENSION) UnitTestTest$(EXE_EXTENSION)
 	./ConsistentHashRingTest$(EXE_EXTENSION)
 	./EncodingTest$(EXE_EXTENSION)
@@ -63,7 +65,10 @@ test: ConsistentHashRingTest$(EXE_EXTENSION) EncodingTest$(EXE_EXTENSION) FileCa
 %Test$(EXE_EXTENSION): %Test.o $(OBJECTS)
 	$(CXX) $(LDFLAGS) $^ -o $@
 
-clean:
-	$(RM) *.dSYM *.o gmon.out libphosg.a jsonformat$(EXE_EXTENSION) *Test$(EXE_EXTENSION)
+.PHONY: build
+build: libphosg.a jsonformat$(EXE_EXTENSION)
 
 .PHONY: clean
+clean:
+	$(RM) *.dSYM *.o gmon.out libphosg.a jsonformat$(EXE_EXTENSION) *Test$(EXE_EXTENSION)
+	$(RM) libphosg
